@@ -29,17 +29,21 @@ kind: ReplicationController
 metadata:
   name: nfs-client
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     role: nfs-server
   template:
     metadata:
+      name: mpi-scheduler
       labels:
         role: nfs-server
+        name: mpi-scheduler
     spec:
+      hostname: mpi-scheduler
+      subdomain: mpi-cluster
       containers:
-      - name: nfs-client-container
-        image: jcwijaya/nfs-client
+      - name: mpi-scheduler
+        image: hannahnw124/slurm_sing_nfs
         ports:
           - name: nfs
             containerPort: 2049
@@ -47,6 +51,7 @@ spec:
             containerPort: 20048
           - name: rpcbind
             containerPort: 111
+#Change privileged?
         securityContext:
           privileged: true
         volumeMounts:
@@ -56,6 +61,66 @@ spec:
         - name: nfs-vol-storage
           persistentVolumeClaim:
             claimName: nfs-pvc
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mpi-worker-0
+  labels:
+    name: mpi-worker
+spec:
+  hostname: mpi-worker-0
+  subdomain: mpi-cluster
+  containers:
+  - image: hannahnw124/slurm_sing_nfs
+    name: mpi-worker
+    securityContext:
+      privileged: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mpi-worker-1
+  labels:
+    name: mpi-worker
+spec:
+  hostname: mpi-worker-1
+  subdomain: mpi-cluster
+  containers:
+  - image: hannahnw124/slurm_sing_nfs
+    name: mpi-worker
+    securityContext:
+      privileged: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mpi-worker-2
+  labels:
+    name: mpi-worker
+spec:
+  hostname: mpi-worker-2
+  subdomain: mpi-cluster
+  containers:
+  - image: hannahnw124/slurm_sing_nfs
+    name: mpi-worker
+    securityContext:
+      privileged: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mpi-worker-3
+  labels:
+    name: mpi-worker
+spec:
+  hostname: mpi-worker-3
+  subdomain: mpi-cluster
+  containers:
+  - image: hannahnw124/slurm_sing_nfs
+    name: mpi-worker
+    securityContext:
+      privileged: true
 ---
 apiVersion: v1
 kind: Service
@@ -74,3 +139,24 @@ spec:
       targetPort: 111
   selector:
     role: nfs-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mpi-cluster
+spec:
+  selector:
+    name: mpi-worker
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mpi-scheduler
+spec:
+  selector:
+    name: mpi-scheduler
+  ports:
+    - protocol: TCP
+      port: 22
+      targetPort: 22
