@@ -9,7 +9,7 @@ spec:
     - ReadWriteMany
   nfs:
 #put IP of the nfs-server container
-    server: 10.1.2.111
+    server: 10.1.3.116
     path: "/mnt/volumes"
 ---
 apiVersion: v1
@@ -41,6 +41,9 @@ spec:
     spec:
       hostname: mpi-scheduler
       subdomain: mpi-cluster
+      dnsConfig:
+        searches:
+        - mpi-cluster.default.svc.cluster.local
       containers:
       - name: mpi-scheduler
         image: hannahnw124/slurm_sing_nfs
@@ -55,7 +58,7 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-          - mountPath: "/home/volumes"
+          - mountPath: "/home"
             name: nfs-vol-storage
       volumes:
         - name: nfs-vol-storage
@@ -71,6 +74,9 @@ metadata:
 spec:
   hostname: mpi-worker-0
   subdomain: mpi-cluster
+  dnsConfig:
+    searches:
+    - mpi-cluster.default.svc.cluster.local
   containers:
   - image: hannahnw124/slurm_sing_nfs
     name: mpi-worker
@@ -86,6 +92,9 @@ metadata:
 spec:
   hostname: mpi-worker-1
   subdomain: mpi-cluster
+  dnsConfig:
+    searches:
+    - mpi-cluster.default.svc.cluster.local
   containers:
   - image: hannahnw124/slurm_sing_nfs
     name: mpi-worker
@@ -101,6 +110,9 @@ metadata:
 spec:
   hostname: mpi-worker-2
   subdomain: mpi-cluster
+  dnsConfig:
+    searches:
+    - mpi-cluster.default.svc.cluster.local
   containers:
   - image: hannahnw124/slurm_sing_nfs
     name: mpi-worker
@@ -116,6 +128,9 @@ metadata:
 spec:
   hostname: mpi-worker-3
   subdomain: mpi-cluster
+  dnsConfig:
+    searches:
+    - mpi-cluster.default.svc.cluster.local
   containers:
   - image: hannahnw124/slurm_sing_nfs
     name: mpi-worker
