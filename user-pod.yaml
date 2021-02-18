@@ -39,6 +39,7 @@ spec:
         role: nfs-server
         name: mpi-scheduler
     spec:
+      automountServiceAccountToken: false
       hostname: mpi-scheduler
       subdomain: mpi-cluster
       dnsConfig:
