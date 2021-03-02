@@ -9,7 +9,7 @@ spec:
     - ReadWriteMany
   nfs:
 #put IP of the nfs-server container
-    server: 10.1.3.116
+    server: 10.1.4.72
     path: "/mnt/volumes"
 ---
 apiVersion: v1
@@ -83,6 +83,13 @@ spec:
     name: mpi-worker
     securityContext:
       privileged: true
+    volumeMounts:
+      - mountPath: "/home"
+        name: nfs-vol-storage
+  volumes:
+    - name: nfs-vol-storage
+      persistentVolumeClaim:
+        claimName: nfs-pvc
 ---
 apiVersion: v1
 kind: Pod
@@ -101,6 +108,13 @@ spec:
     name: mpi-worker
     securityContext:
       privileged: true
+    volumeMounts:
+      - mountPath: "/home"
+        name: nfs-vol-storage
+  volumes:
+    - name: nfs-vol-storage
+      persistentVolumeClaim:
+        claimName: nfs-pvc
 ---
 apiVersion: v1
 kind: Pod
@@ -119,6 +133,13 @@ spec:
     name: mpi-worker
     securityContext:
       privileged: true
+    volumeMounts:
+      - mountPath: "/home"
+        name: nfs-vol-storage
+  volumes:
+    - name: nfs-vol-storage
+      persistentVolumeClaim:
+        claimName: nfs-pvc
 ---
 apiVersion: v1
 kind: Pod
@@ -137,6 +158,13 @@ spec:
     name: mpi-worker
     securityContext:
       privileged: true
+    volumeMounts:
+      - mountPath: "/home"
+        name: nfs-vol-storage
+  volumes:
+    - name: nfs-vol-storage
+      persistentVolumeClaim:
+        claimName: nfs-pvc
 ---
 apiVersion: v1
 kind: Service
