@@ -1,16 +1,4 @@
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: nfs-vol-claim
-spec:
-#  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
----
-apiVersion: v1
 kind: Pod
 metadata:
   name: nfs-server
@@ -21,7 +9,8 @@ spec:
         claimName: nfs-vol-claim
   containers:
   - name: nfs-server-container
-    image: jcwijaya/nfs-server
+    image: jcwijaya/nfs-server:autobuild
+    imagePullPolicy: Always
     ports:
       - name: nfs
         containerPort: 2049
