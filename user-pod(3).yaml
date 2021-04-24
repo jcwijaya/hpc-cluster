@@ -9,7 +9,7 @@ spec:
     - ReadWriteMany
   nfs:
 #put IP of the nfs-server container
-    server: 10.1.4.72
+    server: 10.1.5.231
     path: "/mnt/volumes"
 ---
 apiVersion: v1
@@ -42,12 +42,15 @@ spec:
       automountServiceAccountToken: false
       hostname: mpi-scheduler
       subdomain: mpi-cluster
+      securityContext:
+        runAsUser: 0
       dnsConfig:
         searches:
         - mpi-cluster.default.svc.cluster.local
       containers:
       - name: mpi-scheduler
         image: hannahnw124/slurm_sing_nfs
+        imagePullPolicy: Always
         ports:
           - name: nfs
             containerPort: 2049
@@ -61,6 +64,8 @@ spec:
         volumeMounts:
           - mountPath: "/home"
             name: nfs-vol-storage
+        command: [ "sleep" ]
+        args: [ "infinity" ]
       volumes:
         - name: nfs-vol-storage
           persistentVolumeClaim:
@@ -75,17 +80,22 @@ metadata:
 spec:
   hostname: mpi-worker-0
   subdomain: mpi-cluster
+  securityContext:
+    runAsUser: 0
   dnsConfig:
     searches:
     - mpi-cluster.default.svc.cluster.local
   containers:
   - image: hannahnw124/slurm_sing_nfs
     name: mpi-worker
+    imagePullPolicy: Always
     securityContext:
       privileged: true
     volumeMounts:
       - mountPath: "/home"
         name: nfs-vol-storage
+    command: [ "sleep" ]
+    args: [ "infinity" ]
   volumes:
     - name: nfs-vol-storage
       persistentVolumeClaim:
@@ -100,17 +110,22 @@ metadata:
 spec:
   hostname: mpi-worker-1
   subdomain: mpi-cluster
+  securityContext:
+    runAsUser: 0
   dnsConfig:
     searches:
     - mpi-cluster.default.svc.cluster.local
   containers:
   - image: hannahnw124/slurm_sing_nfs
     name: mpi-worker
+    imagePullPolicy: Always
     securityContext:
       privileged: true
     volumeMounts:
       - mountPath: "/home"
         name: nfs-vol-storage
+    command: [ "sleep" ]
+    args: [ "infinity" ]
   volumes:
     - name: nfs-vol-storage
       persistentVolumeClaim:
@@ -125,17 +140,22 @@ metadata:
 spec:
   hostname: mpi-worker-2
   subdomain: mpi-cluster
+  securityContext:
+    runAsUser: 0
   dnsConfig:
     searches:
     - mpi-cluster.default.svc.cluster.local
   containers:
   - image: hannahnw124/slurm_sing_nfs
     name: mpi-worker
+    imagePullPolicy: Always
     securityContext:
       privileged: true
     volumeMounts:
       - mountPath: "/home"
         name: nfs-vol-storage
+    command: [ "sleep" ]
+    args: [ "infinity" ]
   volumes:
     - name: nfs-vol-storage
       persistentVolumeClaim:
@@ -150,17 +170,22 @@ metadata:
 spec:
   hostname: mpi-worker-3
   subdomain: mpi-cluster
+  securityContext:
+    runAsUser: 0
   dnsConfig:
     searches:
     - mpi-cluster.default.svc.cluster.local
   containers:
   - image: hannahnw124/slurm_sing_nfs
     name: mpi-worker
+    imagePullPolicy: Always
     securityContext:
       privileged: true
     volumeMounts:
       - mountPath: "/home"
         name: nfs-vol-storage
+    command: [ "sleep" ]
+    args: [ "infinity" ]
   volumes:
     - name: nfs-vol-storage
       persistentVolumeClaim:
@@ -204,3 +229,4 @@ spec:
     - protocol: TCP
       port: 22
       targetPort: 22
+   
