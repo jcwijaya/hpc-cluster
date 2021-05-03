@@ -1,9 +1,9 @@
 # hpc-cluster
 To run the deployment do:
 
-`kubectl apply -f volume(1).yaml
+`kubectl apply -f volume(1).yaml`
 
-kubectl apply -f nfs-server(2).yaml`
+`kubectl apply -f nfs-server(2).yaml`
 
 Then look up the IP of the nfs-server pod by doing:
 
