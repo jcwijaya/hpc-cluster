@@ -25,9 +25,9 @@ You can lookup the pod names by doing:
 
 Once you are inside of the nfs-client pod, as the root user go to the home directory and do:
 
-`mkdir jovyan
+`mkdir jovyan`
 
-chown -R jovyan:jovyan jovyan`
+`chown -R jovyan:jovyan jovyan`
 
 Then inside of the /home/jovyan/.ssh directory do:
 
